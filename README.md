@@ -251,26 +251,27 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 
 10: prepare the application namespace and service account so that the workload can communicate with conjur and retrieve secrets
     once prepared the application namespace can contains the folowing resources:
-        #conjur connection configMap
-        # Authenticator RoleBinding
+    
+    #conjur connection configMap
+    # Authenticator RoleBinding
 
-        i: run helm install command, replacing the parameters where relevant. the following will create test-app-namespace namespace
+    i: run helm install command, replacing the parameters where relevant. the following will create test-app-namespace namespace
 
-          helm install namespace-prep cyberark/conjur-config-namespace-prep \
-          --create-namespace \
-          --namespace test-app-namespace \
-          --set conjurConfigMap.authnMethod="authn-jwt" \
-          --set authnK8s.goldenConfigMap="conjur-configmap" \
-          --set authnK8s.namespace="conjur-namespace" \
-          --set authnRoleBinding.create="false"
+     helm install namespace-prep cyberark/conjur-config-namespace-prep \
+     --create-namespace \
+     --namespace test-app-namespace \
+     --set conjurConfigMap.authnMethod="authn-jwt" \
+     --set authnK8s.goldenConfigMap="conjur-configmap" \
+     --set authnK8s.namespace="conjur-namespace" \
+     --set authnRoleBinding.create="false"
 
-        ii: Create the k8s service account for the workload.
-            a: kubectl create serviceaccount test-app-sa -n test-app-namespace
-            b: creat a token for test-app-sa
-               kubectl create token test-app-sa -n test-app-namespace //token lifetime default 1hour
-            c: get the cluster info using sa token,test.
-                i: kubectl cluster-info //will give the cluster ip
-                ii: curl https://clusterip/api --insecure --header "Authorixatio: Bearer <copy the toke here>" //outputs the cluster-info.
+    ii: Create the k8s service account for the workload.
+        a: kubectl create serviceaccount test-app-sa -n test-app-namespace
+        b: creat a token for test-app-sa
+            kubectl create token test-app-sa -n test-app-namespace //token lifetime default 1hour
+         c: get the cluster info using sa token,test.
+            i: kubectl cluster-info //will give the cluster ip
+            ii: curl https://clusterip/api --insecure --header "Authorixatio: Bearer <copy the toke here>" //outputs the cluster-info.
                           
  11: Define application as a conjur host policy and grant host permissons to the JWt Authenticator:
      #test-app.yaml

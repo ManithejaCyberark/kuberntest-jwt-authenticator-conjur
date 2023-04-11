@@ -312,7 +312,7 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
               role: !group consumers
               privilege: [ read, execute ]
               resource: *variables
-              
+
         #grant permissions to the app    
    
         - !grant
@@ -322,78 +322,80 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
     conjur policy load -f app-secrets.yaml -b root
 
 13: populate secret values  
-    i: conjur variable set -i secrets/username -v myUser
-    ii: conjur variable set -i secrets/password -v MyP@ssw0rd!
+
+   conjur variable set -i secrets/username -v myUser
+   conjur variable set -i secrets/password -v MyP@ssw0rd!
 
 
 
 14: deployment manifest file
+
     #replace with the req env variables 
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: test-app
-  name: test-app
-  namespace: test-app-namespace
-spec:
-  selector:
-    matchLabels:
-      app: test-app
-  replicas: 1
-  template:
+    apiVersion: apps/v1
+    kind: Deployment
     metadata:
       labels:
         app: test-app
+      name: test-app
+      namespace: test-app-namespace
     spec:
-      serviceAccountName: test-app-sa
-      containers:
-        - name: test-app
-          image: test-app:test-app
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
-          env:
-            - name: DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: username
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: password
-      initContainers:
-      - image: cyberark/conjur-authn-k8s-client
-        imagePullPolicy: Always
-        name: cyberark-secrets-provider-for-k8s
-        volumeMounts:
-        - name: jwt-token
-          mountPath: /var/run/secrets/tokens
-        env:
-          - name: JWT_TOKEN_PATH
-            value: /var/run/secrets/tokens/jwt
-          - name: CONTAINER_MODE
-            value: init
-          - name: MY_POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-          - name: K8S_SECRETS
-            value: db-credentials
-          - name: SECRETS_DESTINATION
-            value: k8s_secrets
-        envFrom:
-          - configMapRef:
-              name: conjur-connect
-      volumes:
-      - name: jwt-token
-        projected:
-          sources:
-            - serviceAccountToken:
-                path: jwt
-                expirationSeconds: 6000
-                audience: https://kubernetes.default.svc.cluster.local
+      selector:
+        matchLabels:
+          app: test-app
+      replicas: 1
+      template:
+        metadata:
+          labels:
+            app: test-app
+        spec:
+          serviceAccountName: test-app-sa
+          containers:
+            - name: test-app
+              image: test-app:test-app
+              imagePullPolicy: Always
+              ports:
+                - containerPort: 8080
+              env:
+                - name: DB_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-credentials
+                      key: username
+                - name: DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-credentials
+                      key: password
+          initContainers:
+          - image: cyberark/conjur-authn-k8s-client
+            imagePullPolicy: Always
+            name: cyberark-secrets-provider-for-k8s
+            volumeMounts:
+            - name: jwt-token
+              mountPath: /var/run/secrets/tokens
+            env:
+              - name: JWT_TOKEN_PATH
+                value: /var/run/secrets/tokens/jwt
+              - name: CONTAINER_MODE
+                value: init
+              - name: MY_POD_NAMESPACE
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.namespace
+              - name: K8S_SECRETS
+                value: db-credentials
+              - name: SECRETS_DESTINATION
+                value: k8s_secrets
+            envFrom:
+              - configMapRef:
+                  name: conjur-connect
+          volumes:
+          - name: jwt-token
+            projected:
+              sources:
+                - serviceAccountToken:
+                    path: jwt
+                    expirationSeconds: 6000
+                    audience: https://kubernetes.default.svc.cluster.local
     

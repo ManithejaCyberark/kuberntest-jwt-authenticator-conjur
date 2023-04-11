@@ -275,8 +275,8 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
           ii: curl https://clusterip/api --insecure --header "Authorixatio: Bearer <copy the token here>" (outputs forbidden/authorized)
                           
  11: Define application as a conjur host policy and grant host permissons to the JWt Authenticator:
-     #test-app.yaml
    
+     #test-app.yaml
      - !policy
      id: app-path
      body:

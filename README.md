@@ -218,20 +218,26 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
     helm repo add cyberark https://cyberark.github.io/helm-charts
     helm update repo
 
-    # JWT Authenticator= authn-jwt/dev-cluster
-    # ConurAccount=conjur
-    # conjur Appliance url: https://conjur-conjur-oss.conjur-namespace.svc.cluster.local  //https://<service_name>.<namespace_name>.svc.cluster.local>
-    # certificate file
 
-   iii: Prepare the Kubernetes cluster and Golden ConfigMap.
+    b: Prepare the Kubernetes cluster and Golden ConfigMap.
 
-        1: Install the clusterprep helm chart which creates the Golden ConfigMap,conjur-configmap, in $CONJUR_NAMESPACE,conjur-namespace, name in your cluster.
-        2: This Golden ConfigMap contains the conjur connection details that 
+        # Install the clusterprep helm chart which creates the Golden ConfigMap,conjur-configmap,
+         in $CONJUR_NAMESPACE,conjur-namespace, name in your cluster.
+        # This Golden ConfigMap contains the conjur connection details that 
         can be used by all the supported workload set up.
         (https://docs.conjur.org/Latest/en/Content/Integrations/k8s-ocp/k8s-jwt-set-up-apps.htm#Supporte)
+     
+        # JWT Authenticator= authn-jwt/dev-cluster
+        # ConurAccount=conjur
+        # conjur Appliance url: https://conjur-conjur-oss.conjur-namespace.svc.cluster.local  //https://<service_name>.<namespace_name>.svc.cluster.local>
+        # certificate file (conjur.pem) or the .pem(conjur-server.pem) file i.e, generated while conjur init
 
-      #run the below chart with the required details.
+        #run the below chart with the required details.
+       
+        # Note the appliance url format is https://svc_name.namespace.svc.cluster.local
+        # Cert should be written to home dir during conjur init step above
 
+        CONJUR_CERT_B64="$(base64 < ~/conjur-server.pem)"
         helm upgrade "cluster-prep" cyberark/conjur-config-cluster-prep  -n "conjur-namespace" \
         --create-namespace \
         --set conjur.account="conjur" \
@@ -264,7 +270,7 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
                kubectl create token test-app-sa -n test-app-namespace //token lifetime default 1hour
             c: get the cluster info using sa token,test.
                 i: kubectl cluster-info //will give the cluster ip
-                ii: curl https://clusterip/api --insecure --header "Authorixatio: Bearer <copy the toke here>" //outputs the cluster info
+                ii: curl https://clusterip/api --insecure --header "Authorixatio: Bearer <copy the toke here>" //outputs the cluster-info.
                           
  11: Define application as a conjur host policy and grant host permissons to the JWt Authenticator:
      #test-app.yaml

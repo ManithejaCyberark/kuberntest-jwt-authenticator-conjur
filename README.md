@@ -323,8 +323,8 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 
 13: populate secret values  
 
-   conjur variable set -i secrets/username -v myUser
-   conjur variable set -i secrets/password -v MyP@ssw0rd!
+     conjur variable set -i secrets/username -v myUser
+     conjur variable set -i secrets/password -v MyP@ssw0rd!
 
 
 

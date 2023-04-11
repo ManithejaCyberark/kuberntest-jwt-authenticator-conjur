@@ -6,24 +6,24 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 
 1:prerequisite:
 
-  I: Docker desktop for mac, must be running
+   I: Docker desktop for mac, must be running
 
-  II:homebrew
+   II:homebrew
 
-  III:git
+   III:git
 
-  IV:kubectl
+   IV:kubectl
 
-  V:helm    //brew install helm
+   V:helm    //brew install helm
 
-  VI:conjur cli (v7.1.x / python version)
+   VI:conjur cli (v7.1.x / python version)
 
 
 2: KinD: a way to run kubernetes in Docker
    
-  I:brew install kind
+    I:brew install kind
   
-  ii:create kind cluster
+    ii:create kind cluster
 
     cat <<EOF | kind create cluster --name k8sauth --config=-
     kind: Cluster
@@ -58,9 +58,9 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 
   
 3: Deploy Conjur with Helm:
-   i: clone repo: git clone https://github.com/cyberark/conjur-oss-helm-chart
+      i: clone repo: git clone https://github.com/cyberark/conjur-oss-helm-chart
    
-   ii: # Added conjur.account because k8s authenticator reads the account
+      ii: # Added conjur.account because k8s authenticator reads the account
        # name from a server env var which has a default value of default.
        # Added ssl.altName so the k8s internal svc can be used with the
        # same cert.
@@ -85,16 +85,26 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 4: patch the conjur service to have the consistent Nodeport:
 
    i: cat <<EOF > service.patch
+
       spec:
+
           type: NodePort
+
           ports:
+
               - port: 443
+
                 targetPort: https
+
                 protocol: TCP
+
                 name: https
+
                 nodePort: 30987
+
       EOF
      
+
    ii: kubectl -n "${CONJUR_NAMESPACE}" patch service conjur-conjur-oss \
       --patch-file service.patch
    

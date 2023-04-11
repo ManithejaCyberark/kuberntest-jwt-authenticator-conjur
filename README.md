@@ -84,7 +84,7 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
    
 4: patch the conjur service to have the consistent Nodeport:
 
-   i: cat <<EOF >  service.patch
+      cat <<EOF > service.patch
       spec:
           type: NodePort
           ports:
@@ -96,7 +96,7 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
       EOF
      
 
-   ii: kubectl -n "${CONJUR_NAMESPACE}" patch service conjur-conjur-oss \
+    kubectl -n "${CONJUR_NAMESPACE}" patch service conjur-conjur-oss \
       --patch-file service.patch
    
    iii: check conjur service is reachanbel from host: curl -ksI https://localhost:30987 | head -n 1

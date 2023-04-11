@@ -183,16 +183,16 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 
   iii: populate the variables:
   
-          //public key 
-           a: conjur variable set -i conjur/authn-jwt/dev-cluster/public-keys -v "{\"type\":\"jwks\", \"value\":$(cat jwks.json)}"
-         //issuer
-           b: conjur variable set -i conjur/authn-jwt/dev-cluster/issuer -v "https://kubernetes.default.svc.cluster.local"
-         // token-app-property
-           c: conjur variable set -i conjur/authn-jwt/dev-cluster/token-app-property -v "sub"
-         //identity path
-            d: conjur variable set -i conjur/authn-jwt/dev-cluster/identity-path -v app-path  
-         //audience
-            e: conjur variable set -i conjur/authn-jwt/dev-cluster/audience -v "https://kubernetes.default.svc.cluster.local"
+    1:public key 
+      conjur variable set -i conjur/authn-jwt/dev-cluster/public-keys -v "{\"type\":\"jwks\", \"value\":$(cat jwks.json)}"
+    2:issuer
+      conjur variable set -i conjur/authn-jwt/dev-cluster/issuer -v "https://kubernetes.default.svc.cluster.local"
+    3:token-app-property
+      conjur variable set -i conjur/authn-jwt/dev-cluster/token-app-property -v "sub"
+    4:identity path
+      conjur variable set -i conjur/authn-jwt/dev-cluster/identity-path -v app-path  
+    5:audience
+      conjur variable set -i conjur/authn-jwt/dev-cluster/audience -v "https://kubernetes.default.svc.cluster.local"
           
 8: Enable the JWT Authenticator
 

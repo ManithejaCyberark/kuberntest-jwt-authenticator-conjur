@@ -5,11 +5,17 @@ kubernetes and conjur oss setup for JWT Based Authnetication:
 Deploy into a local (on mac) kubernetes with working k8s authenticator and test application.
 
 1:prerequisite:
+
   I: Docker desktop for mac, must be running
+
   II:homebrew
+
   III:git
+
   IV:kubectl
+
   V:helm    //brew install helm
+
   VI:conjur cli (v7.1.x / python version)
 
 

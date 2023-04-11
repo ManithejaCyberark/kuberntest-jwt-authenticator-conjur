@@ -149,12 +149,11 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
        id: conjur/authn-jwt/dev-cluster
        body:
          - !webservice
- 
-    # Uncomment one of following variables depending on the public availability
-    # of the Service Account Issuer Discovery service in Kubernetes 
-    # If the service is publicly available, uncomment 'jwks-uri'.
-    # If the service is not available, uncomment 'public-keys'
-    # - !variable jwks-uri
+	  # Uncomment one of following variables depending on the public availability
+    	  # of the Service Account Issuer Discovery service in Kubernetes 
+    	  # If the service is publicly available, uncomment 'jwks-uri'.
+    	  # If the service is not available, uncomment 'public-keys'
+       # - !variable jwks-uri
          - !variable public-keys
          - !variable issuer
          - !variable token-app-property

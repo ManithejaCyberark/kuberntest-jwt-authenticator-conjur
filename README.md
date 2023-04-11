@@ -99,15 +99,18 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
     kubectl -n "${CONJUR_NAMESPACE}" patch service conjur-conjur-oss \
       --patch-file service.patch
    
-   iii: check conjur service is reachanbel from host: curl -ksI https://localhost:30987 | head -n 1
+    check conjur service is reachanbel from host: curl -ksI https://localhost:30987 | head -n 1
 
 5: Configure conjur Account:
 
   CONJUR_ACCOUNT: conjur
+
   POD_NAME=$(kubectl get po -n "$CONJUR_NAMESPACE" \
               -l "app=conjur-oss, release="$HELM_RELEASE" \
               -o -jsonpath="{.items[0].metadata.name}")
+
   echo $POD_NAME
+
   kubectl exec --namespace $CONJUR_NAMESPACE \
              $POD_NAME \
              --container=conjur-oss \
@@ -125,8 +128,8 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 
    #localhost is a valid SAN for conjur (see SANs in helm conjur deploy step above)
 
-      i: conjur init -u https://localhost:30987 -a conjur --self-signed
-      ii: conjur login --id admin
+     conjur init -u https://localhost:30987 -a conjur --self-signed
+     conjur login --id admin
 
 
 7: Kubernetes authenticator set up

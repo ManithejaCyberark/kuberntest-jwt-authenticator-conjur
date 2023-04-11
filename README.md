@@ -6,17 +6,12 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 
 1:prerequisite:
 
-   I: Docker desktop for mac, must be running
-
-   II:homebrew
-
-   III:git
-
-   IV:kubectl
-
-   V:helm    //brew install helm
-
-   VI:conjur cli (v7.1.x / python version)
+   Docker desktop for mac, must be running
+   homebrew
+   git
+   kubectl
+   helm    //brew install helm
+   conjur cli (v7.1.x / python version)
 
 
 2: KinD: a way to run kubernetes in Docker

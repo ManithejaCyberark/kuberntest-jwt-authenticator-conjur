@@ -149,19 +149,18 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
        id: conjur/authn-jwt/dev-cluster
        body:
          - !webservice
-
-	  # Uncomment one of following variables depending on the public availability
-    	  # of the Service Account Issuer Discovery service in Kubernetes 
-    	  # If the service is publicly available, uncomment 'jwks-uri'.
-    	  # If the service is not available, uncomment 'public-keys'
-          # - !variable jwks-uri
+         # Uncomment one of following variables depending on the public availability
+    	 # of the Service Account Issuer Discovery service in Kubernetes 
+    	 # If the service is publicly available, uncomment 'jwks-uri'.
+    	 # If the service is not available, uncomment 'public-keys'
+         # - !variable jwks-uri
          - !variable public-keys
          - !variable issuer
          - !variable token-app-property
          - !variable identity-path
          - !variable audience
     
-    # Group of applications that can authenticate using this JWT Authenticator
+         # Group of applications that can authenticate using this JWT Authenticator
          - !group apps
    
          - !permit
@@ -171,7 +170,7 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
    
         - !webservice status
    
-    # Group of users who can check the status of the JWT Authenticator
+        # Group of users who can check the status of the JWT Authenticator
         - !group operators
    
         - !permit
@@ -182,7 +181,7 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
        
     load the policy: conjur policy load -f jwt-authenticator-webservice.yaml -b root
 
-    iii: populate the variables:
+ iii: populate the variables:
           //public key 
            a: conjur variable set -i conjur/authn-jwt/dev-cluster/public-keys -v "{\"type\":\"jwks\", \"value\":$(cat jwks.json)}"
          //issuer
@@ -195,15 +194,15 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
             e: conjur variable set -i conjur/authn-jwt/dev-cluster/audience -v "https://kubernetes.default.svc.cluster.local"
           
 8: Enable the JWT Authenticator
-   SERVICE_ID=dev-cluster
-   CONJUR_ACCOUNT=conjur          
 
-   helm upgrade \
-    -n conjur-namespace \
-    --reuse-values \
-    --set authenticators="authn\,authn-jwt/dev-cluster" \
-    "$HELM_RELEASE" \
-    cyberark/conjur-oss    
+     SERVICE_ID=dev-cluster
+     CONJUR_ACCOUNT=conjur          
+     helm upgrade \
+     -n conjur-namespace \
+     --reuse-values \
+     --set authenticators="authn\,authn-jwt/dev-cluster" \
+     "$HELM_RELEASE" \
+     cyberark/conjur-oss    
 
 
 9: set up the workload

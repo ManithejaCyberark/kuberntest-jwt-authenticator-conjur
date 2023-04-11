@@ -1,4 +1,4 @@
-# conjur-oss-helm-chart
+# conjur-oss-k8s-jwt-authenticator
 
 kubernetes and conjur oss setup for JWT Based Authnetication:
 

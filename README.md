@@ -266,12 +266,13 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
      --set authnRoleBinding.create="false"
 
     ii: Create the k8s service account for the workload.
+    
         a: kubectl create serviceaccount test-app-sa -n test-app-namespace
         b: creat a token for test-app-sa
             kubectl create token test-app-sa -n test-app-namespace //token lifetime default 1hour
-         c: get the cluster info using sa token,test.
-            i: kubectl cluster-info //will give the cluster ip
-            ii: curl https://clusterip/api --insecure --header "Authorixatio: Bearer <copy the toke here>" //outputs the cluster-info.
+        c: get the cluster info using sa token through the kubeapi server.
+          i: kubectl cluster-info //will give the cluster ip
+          ii: curl https://clusterip/api --insecure --header "Authorixatio: Bearer <copy the token here>" (outputs forbidden/authorized)
                           
  11: Define application as a conjur host policy and grant host permissons to the JWt Authenticator:
      #test-app.yaml

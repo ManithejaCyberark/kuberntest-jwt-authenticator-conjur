@@ -103,12 +103,15 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 
 5: Configure conjur Account:
 
-CONJUR_ACCOUNT=conjur
- POD_NAME=$(kubectl get pods --namespace "$CONJUR_NAMESPACE" \
+    CONJUR_ACCOUNT=conjur
+
+    POD_NAME=$(kubectl get pods --namespace "$CONJUR_NAMESPACE" \
              -l "app=conjur-oss,release=$HELM_RELEASE" \
              -o jsonpath="{.items[0].metadata.name}")
- echo $POD_NAME
- kubectl exec --namespace $CONJUR_NAMESPACE \
+
+    echo $POD_NAME
+
+    kubectl exec --namespace $CONJUR_NAMESPACE \
              $POD_NAME \
              --container=conjur-oss \
              -- conjurctl account create $CONJUR_ACCOUNT | tail -1

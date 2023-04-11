@@ -84,24 +84,15 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
    
 4: patch the conjur service to have the consistent Nodeport:
 
-   i: cat <<EOF > service.patch
-
+   i: cat <<EOF >  service.patch
       spec:
-
           type: NodePort
-
           ports:
-
               - port: 443
-
                 targetPort: https
-
                 protocol: TCP
-
                 name: https
-
                 nodePort: 30987
-
       EOF
      
 

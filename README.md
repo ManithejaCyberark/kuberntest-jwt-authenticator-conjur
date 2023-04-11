@@ -266,7 +266,7 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
      --set authnRoleBinding.create="false"
 
     ii: Create the k8s service account for the workload.
-    
+
         a: kubectl create serviceaccount test-app-sa -n test-app-namespace
         b: creat a token for test-app-sa
             kubectl create token test-app-sa -n test-app-namespace //token lifetime default 1hour
@@ -277,24 +277,24 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
  11: Define application as a conjur host policy and grant host permissons to the JWt Authenticator:
      #test-app.yaml
    
-        - !policy
-          id: app-path
-          body:
-          - !host
-            id: system:serviceaccount:test-app-namespace:test-app-sa
-            annotations:
-              authn-jwt/dev-cluster/kubernetes.io/namespace: test-app-namespace
-              authn-jwt/dev-cluster/kubernetes.io/serviceaccount/name: test-app-sa
+     - !policy
+     id: app-path
+     body:
+     - !host
+       id: system:serviceaccount:test-app-namespace:test-app-sa
+       annotations:
+          authn-jwt/dev-cluster/kubernetes.io/namespace: test-app-namespace
+          authn-jwt/dev-cluster/kubernetes.io/serviceaccount/name: test-app-sa
 
 
-        #grant the host permissions to the jwt authenticator
-        - !grant
-          roles:
-          - !group conjur/authn-jwt/dev-cluster/apps
-          members:
-          - !host app-path/system:serviceaccount:test-app-namespace:test-app-sa
-  
-  conjur policy load -f test-app.yaml -b root
+     #grant the host permissions to the jwt authenticator
+     - !grant
+       roles:
+        - !group conjur/authn-jwt/dev-cluster/apps
+       members:
+        - !host app-path/system:serviceaccount:test-app-namespace:test-app-sa
+   
+      conjur policy load -f test-app.yaml -b root
 
 12: Define secrets and grant the application access to the secrets
      #app-secrets.yaml                                

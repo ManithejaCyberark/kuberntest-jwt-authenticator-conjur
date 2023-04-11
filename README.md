@@ -136,52 +136,50 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
    i: discover the kubernetes resource(collect the information from the kubernetes cluster configuration that needed to configure JWT Authenticator)
  
      a: check the service account discovery service in kubernetes is publicly available:
-          curl $(kubectl get --raw /.well-known/openid-configuration | jq -r '.jwks_uri') | jq
-
+        curl $(kubectl get --raw /.well-known/openid-configuration | jq -r '.jwks_uri') | jq
      b: kubectl get --raw /.well-known/openid-configuration | jq -r '.jwks_uri'   //for jwks_uri
-
      c: kubectl get --raw $(kubectl get --raw /.well-known/openid-configuration | jq -r '.jwks_uri') > jwks.json  // saves public key in jwks.jsob 
-      
      d: service account token issuer 
           kubectl get --raw /.well-known/openid-configuration | jq -r '.issuer' 
 
     ii: JWT Authenticator in conjur(make sure proper indendation)
 
      jwt-authenticator-webservice.yaml
+      
+- !policy
+  id: conjur/authn-jwt/dev-cluster
+  body:
+    - !webservice
+ 
+    # Uncomment one of following variables depending on the public availability
+    # of the Service Account Issuer Discovery service in Kubernetes 
+    # If the service is publicly available, uncomment 'jwks-uri'.
+    # If the service is not available, uncomment 'public-keys'
+    # - !variable jwks-uri
+    - !variable public-keys
+    - !variable issuer
+    - !variable token-app-property
+    - !variable identity-path
+    - !variable audience
+    
+    # Group of applications that can authenticate using this JWT Authenticator
+    - !group apps
+   
+    - !permit
+      role: !group apps
+      privilege: [ read, authenticate ]
+      resource: !webservice
+   
+    - !webservice status
+   
+    # Group of users who can check the status of the JWT Authenticator
+    - !group operators
+   
+    - !permit
+      role: !group operators
+      privilege: [ read ]
+      resource: !webservice status
 
-                - !policy
-                  id: conjur/authn-jwt/dev-cluster
-                  body:
-                    - !webservice
-                
-                    # Uncomment one of following variables depending on the public availability
-                    # of the Service Account Issuer Discovery service in Kubernetes 
-                    # If the service is publicly available, uncomment 'jwks-uri'.
-                    # If the service is not available, uncomment 'public-keys'
-                    # - !variable jwks-uri
-                    - !variable public-keys
-                    - !variable issuer
-                    - !variable token-app-property
-                    - !variable identity-path
-                    - !variable audience
-                    
-                    # Group of applications that can authenticate using this JWT Authenticator
-                    - !group apps
-                  
-                    - !permit
-                      role: !group apps
-                      privilege: [ read, authenticate ]
-                      resource: !webservice
-                  
-                    - !webservice status
-                  
-                    # Group of users who can check the status of the JWT Authenticator
-                    - !group operators
-                  
-                    - !permit
-                      role: !group operators
-                      privilege: [ read ]
-                      resource: !webservice status
        
        load the policy: conjur policy load -f jwt-authenticator-webservice.yaml -b root
 

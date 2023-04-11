@@ -182,19 +182,15 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
     load the policy: conjur policy load -f jwt-authenticator-webservice.yaml -b root
 
   iii: populate the variables:
-   
+  
           //public key 
            a: conjur variable set -i conjur/authn-jwt/dev-cluster/public-keys -v "{\"type\":\"jwks\", \"value\":$(cat jwks.json)}"
-   
          //issuer
            b: conjur variable set -i conjur/authn-jwt/dev-cluster/issuer -v "https://kubernetes.default.svc.cluster.local"
-   
          // token-app-property
            c: conjur variable set -i conjur/authn-jwt/dev-cluster/token-app-property -v "sub"
-   
          //identity path
-            d: conjur variable set -i conjur/authn-jwt/dev-cluster/identity-path -v app-path
-   
+            d: conjur variable set -i conjur/authn-jwt/dev-cluster/identity-path -v app-path  
          //audience
             e: conjur variable set -i conjur/authn-jwt/dev-cluster/audience -v "https://kubernetes.default.svc.cluster.local"
           

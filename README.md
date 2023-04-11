@@ -289,13 +289,13 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 
 
       #grant the host permissions to the jwt authenticator
-      - !grant
-        roles:
-          - !group conjur/authn-jwt/dev-cluster/apps
-        members:
-          - !host app-path/system:serviceaccount:test-app-namespace:test-app-sa
+    - !grant
+      roles:
+      - !group conjur/authn-jwt/dev-cluster/apps
+      members:
+      - !host app-path/system:serviceaccount:test-app-namespace:test-app-sa
     
-        conjur policy load -f test-app.yaml -b root
+       conjur policy load -f test-app.yaml -b root
 
 12: Define secrets and grant the application access to the secrets
      #app-secrets.yaml                                

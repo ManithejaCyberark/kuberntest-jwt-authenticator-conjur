@@ -231,11 +231,11 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
         # ConurAccount=conjur
         # conjur Appliance url: https://conjur-conjur-oss.conjur-namespace.svc.cluster.local  //https://<service_name>.<namespace_name>.svc.cluster.local>
         # certificate file (conjur.pem) or the .pem(conjur-server.pem) file i.e, generated while conjur init
+       
+        # Cert should be written to home dir during conjur init step above
+        # Note the appliance url format is https://svc_name.namespace.svc.cluster.local
 
         #run the below chart with the required details.
-       
-        # Note the appliance url format is https://svc_name.namespace.svc.cluster.local
-        # Cert should be written to home dir during conjur init step above
 
         CONJUR_CERT_B64="$(base64 < ~/conjur-server.pem)"
         helm upgrade "cluster-prep" cyberark/conjur-config-cluster-prep  -n "conjur-namespace" \

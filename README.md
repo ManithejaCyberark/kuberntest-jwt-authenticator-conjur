@@ -301,22 +301,23 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 
      #app-secrets.yaml                                
      
-      - !policy
-        id: secrets
-        body:
-          - !group consumers
-          - &variables
-            - !variable username
-            - !variable password
-          - !permit
-            role: !group consumers
-            privilege: [ read, execute ]
-            resource: *variables
-
-
-      - !grant
-        role: !group secrets/consumers
-        member: !host app-path/system:serviceaccount:test-app-namespace:test-app-sa
+        - !policy
+          id: secrets
+          body:
+            - !group consumers
+            - &variables
+              - !variable username
+              - !variable password
+            - !permit
+              role: !group consumers
+              privilege: [ read, execute ]
+              resource: *variables
+              
+        #grant permissions to the app    
+   
+        - !grant
+          role: !group secrets/consumers
+          member: !host app-path/system:serviceaccount:test-app-namespace:test-app-sa
 
     conjur policy load -f app-secrets.yaml -b root
 

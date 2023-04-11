@@ -226,18 +226,20 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
    iii: Prepare the Kubernetes cluster and Golden ConfigMap.
 
         1: Install the clusterprep helm chart which creates the Golden ConfigMap,conjur-configmap, in $CONJUR_NAMESPACE,conjur-namespace, name in your cluster.
-        2: This Golden ConfigMap contains the conjur connection details that can be used by all the supported workload set up.(https://docs.conjur.org/Latest/en/Content/Integrations/k8s-ocp/k8s-jwt-set-up-apps.htm#Supporte)
+        2: This Golden ConfigMap contains the conjur connection details that 
+        can be used by all the supported workload set up.
+        (https://docs.conjur.org/Latest/en/Content/Integrations/k8s-ocp/k8s-jwt-set-up-apps.htm#Supporte)
 
       #run the below chart with the required details.
 
-            helm upgrade "cluster-prep" cyberark/conjur-config-cluster-prep  -n "conjur-namespace" \
-            --create-namespace \
-            --set conjur.account="conjur" \
-            --set conjur.applianceUrl="https://conjur-conjur-oss.conjur-namespace.svc.cluster.local" \
-            --set conjur.certificateBase64="${CONJUR_CERT_B64}" \
-            --set authnK8s.authenticatorID="dev-cluster" \
-            --set authnK8s.clusterRole.create=false \
-            --set authnK8s.serviceAccount.create=false
+        helm upgrade "cluster-prep" cyberark/conjur-config-cluster-prep  -n "conjur-namespace" \
+        --create-namespace \
+        --set conjur.account="conjur" \
+        --set conjur.applianceUrl="https://conjur-conjur-oss.conjur-namespace.svc.cluster.local" \
+        --set conjur.certificateBase64="${CONJUR_CERT_B64}" \
+        --set authnK8s.authenticatorID="dev-cluster" \
+        --set authnK8s.clusterRole.create=false \
+        --set authnK8s.serviceAccount.create=false
 
 
 

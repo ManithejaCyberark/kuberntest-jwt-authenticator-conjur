@@ -58,9 +58,9 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 
   
 3: Deploy Conjur with Helm:
-      i: clone repo: git clone https://github.com/cyberark/conjur-oss-helm-chart
+       clone repo: git clone https://github.com/cyberark/conjur-oss-helm-chart
    
-      ii: # Added conjur.account because k8s authenticator reads the account
+       # Added conjur.account because k8s authenticator reads the account
        # name from a server env var which has a default value of default.
        # Added ssl.altName so the k8s internal svc can be used with the
        # same cert.
@@ -134,15 +134,19 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 7: Kubernetes authenticator set up
 
    i: discover the kubernetes resource(collect the information from the kubernetes cluster configuration that needed to configure JWT Authenticator)
-      a: check the service account discovery service in kubernetes is publicly available:
+ 
+     a: check the service account discovery service in kubernetes is publicly available:
           curl $(kubectl get --raw /.well-known/openid-configuration | jq -r '.jwks_uri') | jq
-      b: kubectl get --raw /.well-known/openid-configuration | jq -r '.jwks_uri'   //for jwks_uri
-      c: kubectl get --raw $(kubectl get --raw /.well-known/openid-configuration | jq -r '.jwks_uri') > jwks.json  // saves public key in jwks.jsob 
+
+     b: kubectl get --raw /.well-known/openid-configuration | jq -r '.jwks_uri'   //for jwks_uri
+
+     c: kubectl get --raw $(kubectl get --raw /.well-known/openid-configuration | jq -r '.jwks_uri') > jwks.json  // saves public key in jwks.jsob 
       
-      d: service account token issuer 
+     d: service account token issuer 
           kubectl get --raw /.well-known/openid-configuration | jq -r '.issuer' 
 
     ii: JWT Authenticator in conjur(make sure proper indendation)
+
      jwt-authenticator-webservice.yaml
 
                 - !policy

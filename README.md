@@ -276,8 +276,8 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
                           
  11: Define application as a conjur host policy and grant host permissons to the JWt Authenticator:
    
-     #test-app.yaml
-     - !policy
+ #test-app.yaml
+  - !policy
      id: app-path
      body:
      - !host

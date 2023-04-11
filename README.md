@@ -298,7 +298,9 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
        conjur policy load -f test-app.yaml -b root
 
 12: Define secrets and grant the application access to the secrets
+
      #app-secrets.yaml                                
+     
       - !policy
         id: secrets
         body:
@@ -316,7 +318,7 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
         role: !group secrets/consumers
         member: !host app-path/system:serviceaccount:test-app-namespace:test-app-sa
 
-  conjur policy load -f app-secrets.yaml -b root
+    conjur policy load -f app-secrets.yaml -b root
 
 13: populate secret values  
     i: conjur variable set -i secrets/username -v myUser

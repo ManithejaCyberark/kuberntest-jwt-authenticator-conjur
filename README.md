@@ -142,8 +142,7 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
      d: service account token issuer 
           kubectl get --raw /.well-known/openid-configuration | jq -r '.issuer' 
 
-    ii: JWT Authenticator in conjur(make sure proper indendation)
-
+  ii:JWT Authenticator in conjur(make sure proper indendation)
      jwt-authenticator-webservice.yaml
       
      - !policy

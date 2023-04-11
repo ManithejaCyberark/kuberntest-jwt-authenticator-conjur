@@ -189,7 +189,7 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
       conjur variable set -i conjur/authn-jwt/dev-cluster/issuer -v "https://kubernetes.default.svc.cluster.local"
     3:token-app-property
       conjur variable set -i conjur/authn-jwt/dev-cluster/token-app-property -v "sub"
-    4:identity path
+    4:identity path //change this identity-path based on your requirement
       conjur variable set -i conjur/authn-jwt/dev-cluster/identity-path -v app-path  
     5:audience
       conjur variable set -i conjur/authn-jwt/dev-cluster/audience -v "https://kubernetes.default.svc.cluster.local"
@@ -207,6 +207,7 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
 
 
 9: set up the workload
+
     # Make sure you have Kubernetes admin permissions on a Kubernetes cluster (version 1.21 or later)
     # Make sure you have access to the Kubernetes namespace for your workload, for example, test-app-namespace
     # Make sure that Helm is installed and that you have access to the Helm charts for preparing namespaces in Kubernetes:
@@ -214,8 +215,8 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
     # Make sure you have access to a running Conjur Server
     # Make sure that a JWT Authenticator has been configured and allowlisted
 
-    i: helm repo add cyberark https://cyberark.github.io/helm-charts
-    ii: helm update repo
+    helm repo add cyberark https://cyberark.github.io/helm-charts
+    helm update repo
 
     # JWT Authenticator= authn-jwt/dev-cluster
     # ConurAccount=conjur
@@ -223,8 +224,9 @@ Deploy into a local (on mac) kubernetes with working k8s authenticator and test 
     # certificate file
 
    iii: Prepare the Kubernetes cluster and Golden ConfigMap.
-        Install the clusterprep helm chart which creates the Golden ConfigMap,conjur-configmap, in $CONJUR_NAMESPACE,conjur-namespace, name in your cluster.
-        This Golden ConfigMap contains the conjur connection details that can be used by all the supported workload set up.(https://docs.conjur.org/Latest/en/Content/Integrations/k8s-ocp/k8s-jwt-set-up-apps.htm#Supporte)
+
+        1: Install the clusterprep helm chart which creates the Golden ConfigMap,conjur-configmap, in $CONJUR_NAMESPACE,conjur-namespace, name in your cluster.
+        2: This Golden ConfigMap contains the conjur connection details that can be used by all the supported workload set up.(https://docs.conjur.org/Latest/en/Content/Integrations/k8s-ocp/k8s-jwt-set-up-apps.htm#Supporte)
 
       #run the below chart with the required details.
 
